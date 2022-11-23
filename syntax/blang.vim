@@ -7,7 +7,10 @@ if exists('b:current_syntax') && b:current_syntax == 'blang'
   finish
 endif
 
-syn match BlangVar /[a-zA-Z_][a-zA-Z_0-9]*/ contained
+syn match BlangVar /[a-zA-Z_][a-zA-Z_0-9]*/
+
+syn match BlangNumber /0x[0-9a-fA-F_]\+%\?\|[0-9][0-9_]*\(\.\([0-9][0-9_]*\|\.\@!\)\)\?\(e[0-9_]\+\)\?%\?\|\.\@<!\.[0-9][0-9_]*\(e[0-9_]\+\)\?%\?/
+hi def link BlangNumber Number
 
 syn region BlangString start=/".\@=/ end=/"\|$/ contains=BlangEscape,BlangStringInterp
 syn region BlangString start=/'.\@=/ end=/'\|$/
@@ -49,9 +52,6 @@ hi BlangStringAtInterp ctermfg=LightBlue
 syn match BlangEscape /\\\([abenrtvN]\|x\x\x\|\d\{3}\)\(-\([abnrtv]\|x\x\x\|\d\{3}\)\)\?\|\\./
 hi BlangEscape ctermfg=LightBlue
 
-syn match BlangNumber /0x[0-9a-fA-F_]\+%\?\|[0-9][0-9_]*\(\.\([0-9][0-9_]*\|\.\@!\)\)\?\(e[0-9_]\+\)\?%\?\|\.\@<!\.[0-9][0-9_]*\(e[0-9_]\+\)\?%\?/
-hi def link BlangNumber Number
-
 syn keyword BlangConditional if unless elseif else when then
 hi def link BlangConditional Conditional
 
@@ -90,9 +90,10 @@ syn match BlangStructName /\w\+\( *{\)\@=/
 hi BlangStructName cterm=bold
 
 syn keyword BlangOperator in and or xor is not mod sizeof typeof
-syn match BlangOperator /\<\(and\|or\|xor\|mod\)=/
+syn match BlangOperator /\<\(and\|or\|xor\|mod\|in\)=/
 syn match BlangOperator /[+*/^<>=-]=\?/
 syn match BlangOperator /[:!]\?=/
+syn match BlangOperator /[#?]/
 hi def link BlangOperator Operator
 
 syn match BlangDelim /,/
@@ -119,7 +120,7 @@ hi def link BlangComment Comment
 
 syn region BlangParenGroup start=/(/ end=/)/ contains=@BlangAll
 
-syn cluster BlangAll contains=BlangComment,BlangString,BlangDSL,BlangKeyword,
+syn cluster BlangAll contains=BlangComment,BlangString,BlangDSL,BlangKeyword,BlangOperator,
       \BlangConditional,BlangLoop,BlangFail,BlangStatement,BlangStructure,BlangTypedef,
       \BlangNumber,BlangFnDecl,BlangBoolean,BlangNil,BlangTypeAnnotation,BlangAs,BlangParenGroup
 
