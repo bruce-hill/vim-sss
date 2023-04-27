@@ -12,6 +12,9 @@ syn match BlangVar /[a-zA-Z_][a-zA-Z_0-9]*/
 syn match BlangNumber /0x[0-9a-fA-F_]\+%\?\|[0-9][0-9_]*\(\.\([0-9][0-9_]*\|\.\@!\)\)\?\(e[0-9_]\+\)\?%\?\|\.\@<!\.[0-9][0-9_]*\(e[0-9_]\+\)\?%\?/
 hi def link BlangNumber Number
 
+syn match BlangChar /`./
+hi def link BlangChar String
+
 syn region BlangString start=/".\@=/ end=/"\|$/ contains=BlangEscape,BlangStringInterp
 syn region BlangString start=/'.\@=/ end=/'\|$/
 syn region BlangString start=/".\@!\%(^\z(\s*\).*\)\@<=/ end=/^\z1"\|^\%(\z1\s\)\@!\s*\S\@=/ contains=BlangEscape,BlangStringInterp
@@ -24,26 +27,33 @@ syn region BlangDSLString start=/\[/hs=e+1 end=/]/he=s-1 contains=BlangEscape,Bl
 syn region BlangDSLString start=/{/hs=e+1 end=/}/he=s-1 contained
 syn region BlangDSLString start=/</hs=e+1 end=/>/he=s-1 contains=BlangEscape contained
 syn region BlangDSLString start=/(/hs=e+1 end=/)/he=s-1 contains=BlangStringInterp contained
+syn region BlangDSLString start=/\//hs=e+1 end=/\//he=s-1 contains=BlangStringAtInterp contained
 syn region BlangDSLString start=/>.\@=/hs=e+1 end=/$/ contains=BlangStringAtInterp contained
 syn region BlangDSLString start=/>.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\%(\z1\s\)\@!.\@=/ contains=BlangStringAtInterp contained
 syn region BlangDSLString start=/:.\@=/hs=e+1 end=/$/ contains=BlangStringInterp,BlangEscape contained
 syn region BlangDSLString start=/:.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\%(\z1\s\)\@!.\@=/ contains=BlangStringInterp,BlangEscape contained
 hi def link BlangDSLString String
 
-syn match BlangDSL /%\w\+/ nextgroup=BlangString,BlangDSLString
+syn match BlangDocTest /^\s*\(>>>\|===\|!!!\)/
+hi BlangDocTest ctermfg=gray cterm=italic
+
+syn match BlangDocError /!!!.*/
+hi BlangDocError ctermfg=red cterm=italic
+
+syn match BlangDSL /\$\w*/ nextgroup=BlangString,BlangDSLString
 hi def link BlangDSL String
 hi BlangDSL ctermfg=white cterm=bold
 
-syn match BlangStringDollar /\$/ contained
+syn match BlangStringDollar /\$:\?/ contained
 hi BlangStringDollar ctermfg=LightBlue
 
 syn match BlangStringAt /@/ contained
 hi BlangStringAt ctermfg=LightBlue
 
-syn match BlangStringInterpWord /[a-zA-Z_][a-zA-Z_0-9]*/ contained
+syn match BlangStringInterpWord /[a-zA-Z_][a-zA-Z_0-9]*\(\.[a-zA-Z_][a-zA-Z_0-9]*\)*/ contained
 hi BlangStringInterpWord ctermfg=LightBlue
 
-syn match BlangStringInterp /\$/ contained nextgroup=BlangStringDollar,BlangStringInterpWord,@BlangAll
+syn match BlangStringInterp /\$:\?/ contained nextgroup=BlangStringDollar,BlangStringInterpWord,@BlangAll
 hi BlangStringInterp ctermfg=LightBlue
 
 syn match BlangStringAtInterp /@/ contained nextgroup=BlangStringAt,BlangStringInterpWord,@BlangAll
@@ -52,10 +62,10 @@ hi BlangStringAtInterp ctermfg=LightBlue
 syn match BlangEscape /\\\([abenrtvN]\|x\x\x\|\d\{3}\)\(-\([abnrtv]\|x\x\x\|\d\{3}\)\)\?\|\\./
 hi BlangEscape ctermfg=LightBlue
 
-syn keyword BlangConditional if unless elseif else when then
+syn keyword BlangConditional if unless elseif else when then defer
 hi def link BlangConditional Conditional
 
-syn keyword BlangLoop for between while repeat do until
+syn keyword BlangLoop for between while repeat do until with
 hi def link BlangLoop Repeat
 
 syn keyword BlangFail fail
@@ -91,8 +101,8 @@ hi BlangStructName cterm=bold
 
 syn keyword BlangOperator in and or xor is not mod sizeof typeof
 syn match BlangOperator /\<\(and\|or\|xor\|mod\|in\)=/
-syn match BlangOperator /[+*/^<>=-]=\?/
-syn match BlangOperator /[:!]\?=/
+syn match BlangOperator /\(>>>\|===\)\@![+*/^<>=-]=\?/
+syn match BlangOperator /\(===\)\@![:!]\?=/
 syn match BlangOperator /[#?]/
 hi def link BlangOperator Operator
 
@@ -106,10 +116,11 @@ hi def link BlangAssoc Type
 syn region BlangType start=/\[/ end=/\]\|$/ contains=BlangType contained
 syn region BlangType start=/{/ end=/}\|$/ contains=BlangType,BlangAssoc contained
 syn region BlangType start=/(/ end=/)=>\|$/ contains=BlangType,BlangTypeDelim nextgroup=BlangType contained
-syn match BlangType /\w\+/ contained
+syn match BlangType /[a-zA-Z_0-9@?]\+/ contained
 hi def link BlangType Type
 
-syn match BlangTypeAnnotation /:=\@!/ nextgroup=BlangType skipwhite
+syn match BlangTypeAnnotation /:\@<!:[=:]\@!/
+"nextgroup=BlangType skipwhite
 hi def link BlangTypeAnnotation Operator
 
 syn match BlangAs /\<as\>/ nextgroup=BlangType skipwhite
@@ -120,9 +131,13 @@ hi def link BlangComment Comment
 
 syn region BlangParenGroup start=/(/ end=/)/ contains=@BlangAll
 
-syn cluster BlangAll contains=BlangComment,BlangString,BlangDSL,BlangKeyword,BlangOperator,
+syn match BlangLinkerDirective ;^\s*!link.*$;
+hi BlangLinkerDirective ctermbg=blue ctermfg=black
+
+syn cluster BlangAll contains=BlangVar,BlangComment,BlangChar,BlangString,BlangDSL,BlangKeyword,BlangOperator,
       \BlangConditional,BlangLoop,BlangFail,BlangStatement,BlangStructure,BlangTypedef,
-      \BlangNumber,BlangFnDecl,BlangBoolean,BlangNil,BlangTypeAnnotation,BlangAs,BlangParenGroup
+      \BlangNumber,BlangFnDecl,BlangBoolean,BlangNil,BlangTypeAnnotation,BlangAs,BlangParenGroup,BlangDocTest,BlangDocError
+      \BlangLinkerDirective
 
 if !exists('b:current_syntax')
   let b:current_syntax = 'bpeg'
