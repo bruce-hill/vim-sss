@@ -1,4 +1,4 @@
-" Language:    Blang
+" Language:    SSS
 " Maintainer:  Bruce Hill <bruce@bruce-hill.com>
 " License:     WTFPL
 
@@ -9,15 +9,15 @@ endif
 let b:did_indent = 1
 
 setlocal autoindent
-setlocal indentexpr=GetBlangIndent()
+setlocal indentexpr=GetSSSIndent()
 setlocal indentkeys+=-:
 
 " Only define the function once.
-if exists("*GetBlangIndent")
+if exists("*GetSSSIndent")
   finish
 endif
 
-function! GetBlangIndent()
+function! GetSSSIndent()
   let line = getline(v:lnum)
   let current_ind = indent(v:lnum)
   let previousNum = prevnonblank(v:lnum - 1)

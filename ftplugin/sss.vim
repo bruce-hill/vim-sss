@@ -1,4 +1,4 @@
-" Language:    Blang
+" Language:    SSS
 " Maintainer:  Bruce Hill <bruce@bruce-hill.com>
 " License:     WTFPL
 
