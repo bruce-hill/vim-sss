@@ -90,9 +90,7 @@ hi def link SSSReturnSignature Operator
 syn region SSSFnArgSignature start=/(/ end=/)/ contains=SSSVar,SSSTypeAnnotation,SSSDelim,SSSArgDefault nextgroup=SSSReturnSignature skipwhite contained
 syn match SSSFnName /\<[a-zA-Z_][a-zA-Z_0-9]*\>/ nextgroup=SSSFnArgSignature skipwhite contained
 hi def link SSSFnName Function
-syn keyword SSSInline inline nextgroup=SSSFnName skipwhite
-hi def link SSSInline Keyword
-syn keyword SSSDef def nextgroup=SSSInline,SSSFnName skipwhite
+syn keyword SSSDef def nextgroup=SSSFnName skipwhite
 hi def link SSSDef Keyword
 
 syn match SSSTagEquals /=/ skipwhite nextgroup=SSSErrorWord,SSSNumber contained
@@ -147,14 +145,14 @@ hi def link SSSAs Operator
 syn region SSSComment start=;//; end=/$/
 hi def link SSSComment Comment
 
-syn region SSSParenGroup start=/(/ end=/)/ contains=@SSSAll
+" syn region SSSParenGroup start=/(/ end=/)/ contains=@SSSAll
 
 syn match SSSLinkerDirective ;^\s*!link.*$;
 hi SSSLinkerDirective ctermbg=blue ctermfg=black
 
 syn cluster SSSAll contains=SSSVar,SSSComment,SSSChar,SSSString,SSSDSL,SSSExtend,SSSKeyword,SSSOperator,
       \SSSConditional,SSSLoop,SSSFail,SSSStatement,SSSStructure,SSSTypedef,SSSEmptyTable,
-      \SSSNumber,SSSFnDecl,SSSBoolean,SSSNil,SSSTypeAnnotation,SSSAs,SSSParenGroup,SSSDocTest,SSSDocError
+      \SSSNumber,SSSFnDecl,SSSBoolean,SSSNil,SSSTypeAnnotation,SSSAs,SSSDocTest,SSSDocError
       \SSSLinkerDirective
 
 if !exists('b:current_syntax')
