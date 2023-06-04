@@ -74,15 +74,22 @@ hi def link SSSFail Exception
 syn keyword SSSStatement stop skip fail pass return del
 hi def link SSSStatement Statement
 
-syn keyword SSSKeyword use extern inline
+syn keyword SSSKeyword use extern
 hi def link SSSKeyword Keyword
 
 syn keyword SSSExtend extend nextgroup=SSSType skipwhite
 hi def link SSSExtend Keyword
 
-syn match SSSFnName /\<[a-zA-Z_][a-zA-Z_0-9]*\>/ contained
+syn match SSSArgDefault /=/ nextgroup=@SSSAll skipwhite contained
+hi def link SSSArgDefault Operator
+syn match SSSReturnSignature /->/ nextgroup=SSSType skipwhite contained
+hi def link SSSReturnSignature Operator
+syn region SSSFnArgSignature start=/(/ end=/)/ contains=SSSVar,SSSTypeAnnotation,SSSDelim,SSSArgDefault nextgroup=SSSReturnSignature skipwhite contained
+syn match SSSFnName /\<[a-zA-Z_][a-zA-Z_0-9]*\>/ nextgroup=SSSFnArgSignature skipwhite contained
 hi def link SSSFnName Function
-syn keyword SSSDef def nextgroup=SSSFnName skipwhite
+syn keyword SSSInline inline nextgroup=SSSFnName skipwhite
+hi def link SSSInline Keyword
+syn keyword SSSDef def nextgroup=SSSInline,SSSFnName skipwhite
 hi def link SSSDef Keyword
 
 " syn region SSSFnDecl start=/\<def\>/ end=/(\@=\|$/ contains=SSSFnName,SSSKeyword
@@ -103,20 +110,22 @@ syn match SSSOperator /[#?]/
 hi def link SSSOperator Operator
 
 syn match SSSDelim /,/
-hi def link SSSDelim Dlimiter
+hi def link SSSDelim Delimiter
 
+syn match SSSTableValueType /=>/ nextgroup=SSSType contained
+hi def link SSSTableValueType Type
 syn match SSSTypeDelim /,/ contained
 hi def link SSSTypeDelim Type
 syn match SSSAssoc /=/ contained
 hi def link SSSAssoc Type
-syn region SSSType start=/\[/ end=/\]\|$/ contains=SSSType contained
-syn region SSSType start=/{/ end=/}\|$/ contains=SSSType,SSSAssoc contained
-syn region SSSType start=/(/ end=/)=>\|$/ contains=SSSType,SSSTypeDelim nextgroup=SSSType contained
-syn match SSSType /[a-zA-Z_0-9@?]\+/ contained
+syn region SSSType start=/\[/ end=/\]\|$/ contains=SSSType contained nextgroup=SSSTableValueType
+syn region SSSType start=/{/ end=/}\|$/ contains=SSSType,SSSAssoc contained nextgroup=SSSTableValueType
+syn region SSSType start=/(/ end=/) *-> *\|$/ contains=SSSType,SSSTypeDelim nextgroup=SSSType contained
+syn match SSSType /[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType
+syn match SSSType /\$[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType
 hi def link SSSType Type
 
-syn match SSSTypeAnnotation /:\@<!:[=:]\@!/
-"nextgroup=SSSType skipwhite
+syn match SSSTypeAnnotation /:\@<!:[=:]\@!/ nextgroup=SSSType
 hi def link SSSTypeAnnotation Operator
 
 syn keyword SSSAs as nextgroup=SSSType skipwhite
@@ -131,7 +140,7 @@ syn match SSSLinkerDirective ;^\s*!link.*$;
 hi SSSLinkerDirective ctermbg=blue ctermfg=black
 
 syn cluster SSSAll contains=SSSVar,SSSComment,SSSChar,SSSString,SSSDSL,SSSExtend,SSSKeyword,SSSOperator,
-      \SSSConditional,SSSLoop,SSSFail,SSSStatement,SSSStructure,SSSTypedef,
+      \SSSConditional,SSSLoop,SSSFail,SSSStatement,SSSStructure,SSSTypedef,SSSEmptyTable,
       \SSSNumber,SSSFnDecl,SSSBoolean,SSSNil,SSSTypeAnnotation,SSSAs,SSSParenGroup,SSSDocTest,SSSDocError
       \SSSLinkerDirective
 
