@@ -7,6 +7,9 @@ if exists('b:current_syntax') && b:current_syntax == 'sss'
   finish
 endif
 
+syn match SSSErrorWord /\i*/ contained
+hi def link SSSErrorWord Error
+
 syn match SSSVar /[a-zA-Z_][a-zA-Z_0-9]*/
 
 syn match SSSNumber /0x[0-9a-fA-F_]\+%\?\|[0-9][0-9_]*\(\.\([0-9][0-9_]*\|\.\@!\)\)\?\(e[0-9_]\+\)\?%\?\|\.\@<!\.[0-9][0-9_]*\(e[0-9_]\+\)\?%\?/
@@ -92,6 +95,13 @@ hi def link SSSInline Keyword
 syn keyword SSSDef def nextgroup=SSSInline,SSSFnName skipwhite
 hi def link SSSDef Keyword
 
+syn match SSSTagEquals /=/ skipwhite nextgroup=SSSErrorWord,SSSNumber contained
+hi def link SSSTagEquals Operator
+syn match SSSTagType /(/ nextgroup=SSSType contained
+syn match SSSTag /[a-zA-Z_]\i*/ nextgroup=SSSTagType contained
+hi SSSTag cterm=bold
+syn region SSSTaggedUnion start=/{|/ end=/|}/ contains=SSSTag,SSSTagEquals
+
 " syn region SSSFnDecl start=/\<def\>/ end=/(\@=\|$/ contains=SSSFnName,SSSKeyword
 
 syn keyword SSSBoolean yes no
@@ -118,11 +128,13 @@ syn match SSSTypeDelim /,/ contained
 hi def link SSSTypeDelim Type
 syn match SSSAssoc /=/ contained
 hi def link SSSAssoc Type
-syn region SSSType start=/\[/ end=/\]\|$/ contains=SSSType contained nextgroup=SSSTableValueType
-syn region SSSType start=/{/ end=/}\|$/ contains=SSSType,SSSAssoc contained nextgroup=SSSTableValueType
-syn region SSSType start=/(/ end=/) *-> *\|$/ contains=SSSType,SSSTypeDelim nextgroup=SSSType contained
-syn match SSSType /[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType
-syn match SSSType /\$[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType
+syn region SSSTypeUnits start=/</ end=/>/
+hi def link SSSTypeUnits Type
+syn region SSSType start=/\[/ end=/\]\|$/ contains=SSSType contained nextgroup=SSSTableValueType,SSSTypeUnits
+syn region SSSType start=/{/ end=/}\|$/ contains=SSSType,SSSAssoc contained nextgroup=SSSTableValueType,SSSTypeUnits
+syn region SSSType start=/(/ end=/) *->/ contains=SSSType,SSSTypeDelim nextgroup=SSSType contained
+syn match SSSType /[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType,SSSTypeUnits
+syn match SSSType /\$[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType,SSSTypeUnits
 hi def link SSSType Type
 
 syn match SSSTypeAnnotation /:\@<!:[=:]\@!/ nextgroup=SSSType
