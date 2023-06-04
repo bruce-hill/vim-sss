@@ -133,8 +133,8 @@ hi def link SSSTypeUnits Type
 syn region SSSType start=/\[/ end=/\]\|$/ contains=SSSType contained nextgroup=SSSTableValueType,SSSTypeUnits
 syn region SSSType start=/{/ end=/}\|$/ contains=SSSType,SSSAssoc contained nextgroup=SSSTableValueType,SSSTypeUnits
 syn region SSSType start=/(/ end=/) *->/ contains=SSSType,SSSTypeDelim nextgroup=SSSType contained
-syn match SSSType /[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType,SSSTypeUnits
-syn match SSSType /\$[a-zA-Z_0-9@?]\+/ contained nextgroup=SSSTableValueType,SSSTypeUnits
+syn match SSSType /[a-zA-Z_0-9@?&]\+/ contained nextgroup=SSSTableValueType,SSSTypeUnits
+syn match SSSType /\$[a-zA-Z_0-9@?&]\+/ contained nextgroup=SSSTableValueType,SSSTypeUnits
 hi def link SSSType Type
 
 syn match SSSTypeAnnotation /:\@<!:[=:]\@!/ nextgroup=SSSType
