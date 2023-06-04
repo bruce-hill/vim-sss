@@ -71,17 +71,14 @@ hi def link SSSLoop Repeat
 syn keyword SSSFail fail
 hi def link SSSFail Exception
 
-syn keyword SSSStatement stop skip fail pass return
+syn keyword SSSStatement stop skip fail pass return del
 hi def link SSSStatement Statement
 
-syn keyword SSSStructure struct unit enum union
-hi def link SSSStructure Structure
-
-syn keyword SSSTypedef deftype
-hi def link SSSTypedef Typedef
-
-syn keyword SSSKeyword macro deftype use export extern global
+syn keyword SSSKeyword use extern inline
 hi def link SSSKeyword Keyword
+
+syn keyword SSSExtend extend nextgroup=SSSType skipwhite
+hi def link SSSExtend Keyword
 
 syn match SSSFnName /\<[a-zA-Z_][a-zA-Z_0-9]*\>/ contained
 hi def link SSSFnName Function
@@ -99,8 +96,7 @@ hi SSSNil cterm=bold ctermfg=cyan
 syn match SSSStructName /\w\+\( *{\)\@=/
 hi SSSStructName cterm=bold
 
-syn keyword SSSOperator in and or xor is not mod sizeof typeof
-syn match SSSOperator /\<\(and\|or\|xor\|mod\|in\)=/
+syn keyword SSSOperator of in by and or xor is not mod mod1 sizeof typeof bitcast _min_ _max_ _mix_
 syn match SSSOperator /\(>>>\|===\)\@![+*/^<>=-]=\?/
 syn match SSSOperator /\(===\)\@![:!]\?=/
 syn match SSSOperator /[#?]/
@@ -123,7 +119,7 @@ syn match SSSTypeAnnotation /:\@<!:[=:]\@!/
 "nextgroup=SSSType skipwhite
 hi def link SSSTypeAnnotation Operator
 
-syn match SSSAs /\<as\>/ nextgroup=SSSType skipwhite
+syn keyword SSSAs as nextgroup=SSSType skipwhite
 hi def link SSSAs Operator
 
 syn region SSSComment start=;//; end=/$/
@@ -134,7 +130,7 @@ syn region SSSParenGroup start=/(/ end=/)/ contains=@SSSAll
 syn match SSSLinkerDirective ;^\s*!link.*$;
 hi SSSLinkerDirective ctermbg=blue ctermfg=black
 
-syn cluster SSSAll contains=SSSVar,SSSComment,SSSChar,SSSString,SSSDSL,SSSKeyword,SSSOperator,
+syn cluster SSSAll contains=SSSVar,SSSComment,SSSChar,SSSString,SSSDSL,SSSExtend,SSSKeyword,SSSOperator,
       \SSSConditional,SSSLoop,SSSFail,SSSStatement,SSSStructure,SSSTypedef,
       \SSSNumber,SSSFnDecl,SSSBoolean,SSSNil,SSSTypeAnnotation,SSSAs,SSSParenGroup,SSSDocTest,SSSDocError
       \SSSLinkerDirective
