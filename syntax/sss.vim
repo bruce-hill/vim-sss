@@ -152,7 +152,7 @@ syn match SSSLinkerDirective ;^\s*!link.*$;
 hi SSSLinkerDirective ctermbg=blue ctermfg=black
 
 syn cluster SSSAll contains=SSSVar,SSSComment,SSSChar,SSSString,SSSDSL,SSSExtend,SSSKeyword,SSSOperator,
-      \SSSConditional,SSSLoop,SSSFail,SSSStatement,SSSStructure,SSSTypedef,SSSEmptyTable,
+      \SSSConditional,SSSLoop,SSSFail,SSSStatement,SSSStructure,SSSTypedef,SSSEmptyTable,SSSUse,
       \SSSNumber,SSSFnDecl,SSSBoolean,SSSNil,SSSTypeAnnotation,SSSAs,SSSDocTest,SSSDocError
       \SSSLinkerDirective
 
