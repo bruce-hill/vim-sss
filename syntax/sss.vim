@@ -37,8 +37,9 @@ syn region SSSDSLString start=/:.\@=/hs=e+1 end=/$/ contains=SSSStringInterp,SSS
 syn region SSSDSLString start=/:.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\%(\z1\s\)\@!.\@=/ contains=SSSStringInterp,SSSEscape contained
 hi def link SSSDSLString String
 
-syn match SSSDocTest /^\s*\(>>>\|===\|!!!\)/
-hi SSSDocTest ctermfg=gray cterm=italic
+syn match SSSDocTest /^\s*>>>/
+syn region SSSDocTest start=/^\s*===/ end=/$/
+hi SSSDocTest ctermfg=gray
 
 syn match SSSDocError /!!!.*/
 hi SSSDocError ctermfg=red cterm=italic
