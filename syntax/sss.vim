@@ -78,8 +78,8 @@ hi def link SSSFail Exception
 syn keyword SSSStatement stop skip fail pass return del
 hi def link SSSStatement Statement
 
-syn keyword SSSKeyword use extern
-hi def link SSSKeyword Keyword
+syn region SSSUse matchgroup=Keyword start=/\<use\>/ matchgroup=SSSDelim end=/$\|;/ 
+hi def link SSSUse String
 
 syn keyword SSSExtend extend nextgroup=SSSType skipwhite
 hi def link SSSExtend Keyword
