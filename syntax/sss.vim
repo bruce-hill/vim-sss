@@ -127,7 +127,7 @@ syn match SSSTypeDelim /,/ contained
 hi def link SSSTypeDelim Type
 syn match SSSAssoc /=/ contained
 hi def link SSSAssoc Type
-syn region SSSTypeUnits start=/</ end=/>/
+syn region SSSTypeUnits start=/</ end=/>/ contained
 hi def link SSSTypeUnits Type
 syn region SSSType start=/\[/ end=/\]\|$/ contains=SSSType contained nextgroup=SSSTableValueType,SSSTypeUnits
 syn region SSSType start=/{/ end=/}\|$/ contains=SSSType,SSSAssoc contained nextgroup=SSSTableValueType,SSSTypeUnits
