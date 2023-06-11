@@ -57,10 +57,10 @@ hi SSSStringAt ctermfg=LightBlue
 syn match SSSStringInterpWord /[a-zA-Z_][a-zA-Z_0-9]*\(\.[a-zA-Z_][a-zA-Z_0-9]*\)*/ contained
 hi SSSStringInterpWord ctermfg=LightBlue
 
-syn match SSSStringInterp /\$:\?/ contained nextgroup=SSSStringDollar,SSSStringInterpWord,@SSSAll
+syn match SSSStringInterp /\$:\?/ contained nextgroup=SSSStringDollar,SSSStringInterpWord,SSSParenGroup,@SSSAll
 hi SSSStringInterp ctermfg=LightBlue
 
-syn match SSSStringAtInterp /@/ contained nextgroup=SSSStringAt,SSSStringInterpWord,@SSSAll
+syn match SSSStringAtInterp /@/ contained nextgroup=SSSStringAt,SSSStringInterpWord,SSSParenGroup,@SSSAll
 hi SSSStringAtInterp ctermfg=LightBlue
 
 syn match SSSEscape /\\\([abenrtvN]\|x\x\x\|\d\{3}\)\(-\([abnrtv]\|x\x\x\|\d\{3}\)\)\?\|\\./
@@ -146,7 +146,7 @@ hi def link SSSAs Operator
 syn region SSSComment start=;//; end=/$/
 hi def link SSSComment Comment
 
-" syn region SSSParenGroup start=/(/ end=/)/ contains=@SSSAll
+syn region SSSParenGroup start=/(/ end=/)/ contains=@SSSAll,SSSParenGroup contained
 
 syn match SSSLinkerDirective ;^\s*!link.*$;
 hi SSSLinkerDirective ctermbg=blue ctermfg=black
