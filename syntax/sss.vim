@@ -66,7 +66,10 @@ hi SSSStringAtInterp ctermfg=LightBlue
 syn match SSSEscape /\\\([abenrtvN]\|x\x\x\|\d\{3}\)\(-\([abnrtv]\|x\x\x\|\d\{3}\)\)\?\|\\./
 hi SSSEscape ctermfg=LightBlue
 
-syn keyword SSSConditional if unless elseif else when then defer
+syn keyword SSSExtern extern
+hi def link SSSExtern Statement
+
+syn keyword SSSConditional if unless elseif else when then defer convert
 hi def link SSSConditional Conditional
 
 syn keyword SSSLoop for between while repeat do until with
@@ -75,7 +78,7 @@ hi def link SSSLoop Repeat
 syn keyword SSSFail fail
 hi def link SSSFail Exception
 
-syn keyword SSSStatement stop skip fail pass return del
+syn keyword SSSStatement stop skip fail pass return del struct
 hi def link SSSStatement Statement
 
 syn region SSSUse matchgroup=Keyword start=/\<use\>/ matchgroup=SSSDelim end=/$\|;/ 
@@ -91,15 +94,21 @@ hi def link SSSReturnSignature Operator
 syn region SSSFnArgSignature start=/(/ end=/)/ contains=SSSVar,SSSTypeAnnotation,SSSDelim,SSSArgDefault nextgroup=SSSReturnSignature skipwhite contained
 syn match SSSFnName /\<[a-zA-Z_][a-zA-Z_0-9]*\>/ nextgroup=SSSFnArgSignature skipwhite contained
 hi def link SSSFnName Function
-syn keyword SSSDef def nextgroup=SSSFnName skipwhite
-hi def link SSSDef Keyword
+syn keyword SSSFuncDef func nextgroup=SSSFnName skipwhite
+hi def link SSSFuncDef Keyword
+
+syn keyword SSSKeyword alias unit
+hi def link SSSKeyword Keyword
 
 syn match SSSTagEquals /=/ skipwhite nextgroup=SSSErrorWord,SSSNumber contained
 hi def link SSSTagEquals Operator
 syn match SSSTagType /(/ nextgroup=SSSType contained
 syn match SSSTag /[a-zA-Z_]\i*/ nextgroup=SSSTagType contained
 hi SSSTag cterm=bold
-syn region SSSTaggedUnion start=/{|/ end=/|}/ contains=SSSTag,SSSTagEquals
+
+syn keyword SSSEnum enum skipwhite nextgroup=SSSTaggedUnion
+hi def link SSSEnum Keyword
+syn region SSSTaggedUnion start=/:=/ skip=/|/ end=/$/ contains=SSSTag,SSSTagEquals contained
 
 " syn region SSSFnDecl start=/\<def\>/ end=/(\@=\|$/ contains=SSSFnName,SSSKeyword
 
