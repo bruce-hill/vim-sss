@@ -1,1 +1,1 @@
-This is a vim plugin for the [SSS programming language](https://github.com/bruce-hil/sss).
+This is a vim plugin for the [Tomo programming language](https://github.com/bruce-hil/tomo).

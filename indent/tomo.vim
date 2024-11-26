@@ -1,4 +1,4 @@
-" Language:    SSS
+" Language:    Tomo
 " Maintainer:  Bruce Hill <bruce@bruce-hill.com>
 " License:     WTFPL
 
@@ -9,15 +9,15 @@ endif
 let b:did_indent = 1
 
 setlocal autoindent
-setlocal indentexpr=GetSSSIndent()
+setlocal indentexpr=GetTomoIndent()
 setlocal indentkeys+=-:
 
 " Only define the function once.
-if exists("*GetSSSIndent")
+if exists("*GetTomoIndent")
   finish
 endif
 
-function! GetSSSIndent()
+function! GetTomoIndent()
   let line = getline(v:lnum)
   let current_ind = indent(v:lnum)
   let previousNum = prevnonblank(v:lnum - 1)

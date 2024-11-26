@@ -1,4 +1,4 @@
-" Language:    SSS
+" Language:    Tomo
 " Maintainer:  Bruce Hill <bruce@bruce-hill.com>
 " License:     WTFPL
 
