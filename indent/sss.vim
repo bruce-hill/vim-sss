@@ -24,7 +24,7 @@ function! GetSSSIndent()
   let previous = getline(previousNum)
   let ind = indent(previousNum)
 
-  if previous =~ '\(^\s*\<\(for\|while\|if\|else\|elseif\|between\|def\)\>\)\|[:=]\s*$'
+  if previous =~ '\(^\s*\<\(for\|while\|if\|else\|elseif\|between\|def\)\>\)\|^[^#]*[:=]\s*$'
     let ind = ind + &tabstop
   endif
 

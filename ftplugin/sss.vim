@@ -10,6 +10,6 @@ let b:did_ftplugin = 1
 setlocal formatoptions-=t
 setlocal cpoptions+=M
 
-setlocal commentstring=//\ %s
+setlocal commentstring=#\ %s
 
 let b:undo_ftplugin = "setlocal formatoptions< cpoptions<"
