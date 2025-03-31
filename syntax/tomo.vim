@@ -26,7 +26,7 @@ syn region TomoString start=/'.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\z1'\|^\%(\z
 syn region TomoString start=/`.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\z1`\|^\%(\z1\s\)\@!\s*\S\@=/he=s-1
 hi def link TomoString String
 
-syn region TomoPath start=;(\(\~/\|./\|../\|/\); skip=/\\.\|([^)]*)/ end=;$\|); contains=TomoStringInterp,TomoEscape
+syn region TomoPath start=;(\(\~/\|\./\|\.\./\|/\); skip=/\\.\|([^)]*)/ end=;$\|); contains=TomoStringInterp,TomoEscape
 hi def link TomoPath String
 
 syn region TomoDSLString start=/\z(["'`|/;([{<]\).\@=/hs=e end=/\z1/ contains=TomoStringInterp contained
@@ -72,7 +72,7 @@ hi TomoEscape ctermfg=LightBlue
 syn keyword TomoExtern extern
 hi def link TomoExtern Statement
 
-syn keyword TomoConditional if unless elseif else when then defer convert
+syn keyword TomoConditional if unless else when then defer holding
 hi def link TomoConditional Conditional
 
 syn keyword TomoLoop for between while do until with repeat
@@ -81,11 +81,14 @@ hi def link TomoLoop Repeat
 syn keyword TomoFail fail
 hi def link TomoFail Exception
 
-syn keyword TomoStatement stop skip fail pass return del struct lang
+syn keyword TomoStatement stop skip fail pass return del struct lang extend
 hi def link TomoStatement Statement
 
-syn keyword TomoNull NONE
-hi TomoNull ctermfg=red
+syn keyword TomoNone none
+hi TomoNone ctermfg=red
+
+syn keyword TomoSerializing deserialize
+hi TomoSerializing ctermfg=blue cterm=bold
 
 syn region TomoUse matchgroup=Keyword start=/\<use\>/ matchgroup=TomoDelim end=/$\|;/ 
 hi def link TomoUse String
@@ -99,6 +102,8 @@ syn match TomoFnName /\<[a-zA-Z_][a-zA-Z_0-9]*\>/ nextgroup=TomoFnArgSignature s
 hi def link TomoFnName Function
 syn keyword TomoFuncDef func nextgroup=TomoFnName skipwhite
 hi def link TomoFuncDef Keyword
+syn keyword TomoConvertDef convert nextgroup=TomoFnArgSignature skipwhite
+hi def link TomoConvertDef Keyword
 
 syn match TomoTagEquals /=/ skipwhite nextgroup=TomoErrorWord,TomoNumber contained
 hi def link TomoTagEquals Operator
@@ -115,13 +120,10 @@ syn region TomoTaggedUnion start=/:=/ skip=/|/ end=/$/ contains=TomoTag,TomoTagE
 syn keyword TomoBoolean yes no
 hi def link TomoBoolean Boolean
 
-syn keyword TomoNil nil
-hi TomoNil cterm=bold ctermfg=cyan
-
 syn match TomoStructName /\w\+\( *{\)\@=/
 hi TomoStructName cterm=bold
 
-syn keyword TomoOperator in and or xor is not mod mod1 _min_ _max_ _mix_
+syn keyword TomoOperator in and or xor is not mod mod1 _min_ _max_ _mix_ mutexed
 syn match TomoOperator ;\([a-zA-Z0-9_)] *\)\@<=/;
 syn match TomoOperator ;[+*^<>=-]=\?;
 syn match TomoOperator /[:!]\?=/
@@ -169,8 +171,8 @@ syn match TomoLinkerDirective ;^\s*!link.*$;
 hi TomoLinkerDirective ctermbg=blue ctermfg=black
 
 syn cluster TomoAll contains=TomoVar,TomoComment,TomoChar,TomoString,TomoDSL,TomoPath,TomoKeyword,TomoOperator,
-      \TomoConditional,TomoLoop,TomoFail,TomoNull,TomoStatement,TomoStructure,TomoTypedef,TomoEmptyTable,TomoUse,
-      \TomoNumber,TomoFnDecl,TomoBoolean,TomoNil,TomoDocTest,TomoDocError,TomoArray,TomoTable,
+      \TomoConditional,TomoLoop,TomoFail,TomoNone,TomoSerializing,TomoStatement,TomoStructure,TomoTypedef,TomoEmptyTable,TomoUse,
+      \TomoNumber,TomoFnDecl,TomoBoolean,TomoDocTest,TomoDocError,TomoArray,TomoTable,
       \TomoLinkerDirective,TomoInlineC
 
 if !exists('b:current_syntax')
