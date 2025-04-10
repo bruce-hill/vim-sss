@@ -24,7 +24,7 @@ function! GetTomoIndent()
   let previous = getline(previousNum)
   let ind = indent(previousNum)
 
-  if previous =~ '\(^\s*\<\(for\|while\|if\|else\|elseif\|between\|def\)\>\)\|^[^#]*[:=]\s*$'
+  if previous =~ '\(^\s*\<\(for\|while\|if\|else\|repeat\|when\|is\|func\|convert\|lang\|struct\|enum\)\>\)\|^[^#]*[:=]\s*$'
     let ind = ind + &tabstop
   endif
 
