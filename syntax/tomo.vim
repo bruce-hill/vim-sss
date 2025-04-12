@@ -75,7 +75,7 @@ hi def link TomoExtern Statement
 syn keyword TomoConditional if unless else when then defer holding
 hi def link TomoConditional Conditional
 
-syn keyword TomoLoop for between while do until with repeat
+syn keyword TomoLoop for while do until with repeat
 hi def link TomoLoop Repeat
 
 syn keyword TomoFail fail
