@@ -13,4 +13,4 @@ setlocal expandtab shiftwidth=4 tabstop=4
 
 setlocal commentstring=#\ %s
 
-let b:undo_ftplugin = "setlocal formatoptions< cpoptions<"
+let b:undo_ftplugin = "setlocal formatoptions< cpoptions< expandtab< shiftwidth< tabstop< commentstring<"
