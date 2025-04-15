@@ -25,11 +25,15 @@ function! GetTomoIndent()
   let ind = indent(previousNum)
 
   if line =~ '^\s*else$'
-    if prev_line =~ '^\s*\(else if\|if\) .* then .*$' && current_ind == ind
+    if prev_line =~ '^\s*else \+if\> .* then .*$' && current_ind == ind
       return current_ind
     else
       return current_ind - &tabstop
     endif
+  endif
+
+  if line =~ '^\s*\(skip\|stop\|pass\|return\|break\|continue\|)\(.*\<if\>\)\@!$'
+    return current_ind - &tabstop
   endif
 
   if line =~ '^\s*is$'
@@ -40,7 +44,7 @@ function! GetTomoIndent()
     endif
   endif
 
-  if prev_line =~ '\(^\s*\<\(for\|while\|if\|else\|repeat\|when\|is\|func\|convert\|lang\|struct\|enum\)\>\)\|^[^#]*[:=]\s*$'
+  if prev_line =~ '\(^\s*\<\(for\|while\|if\|repeat\|when\|func\|convert\|lang\|struct\|enum\)\>\)\|^[^#]*[:=]\s*$'
     if prev_line !~ '^.* then '
       let ind = ind + &tabstop
     endif
