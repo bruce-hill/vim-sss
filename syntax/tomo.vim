@@ -81,7 +81,7 @@ hi def link TomoLoop Repeat
 syn keyword TomoFail fail
 hi def link TomoFail Exception
 
-syn keyword TomoStatement stop skip break continue fail pass return del struct lang extend
+syn keyword TomoStatement stop skip break continue fail pass return del struct lang extend assert
 hi def link TomoStatement Statement
 
 syn keyword TomoNone none
