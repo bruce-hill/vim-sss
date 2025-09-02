@@ -20,22 +20,22 @@ hi def link TomoChar String
 
 syn region TomoString start=/".\@=/ end=/"\|$/ contains=TomoStringInterp,TomoEscape
 syn region TomoString start=/'.\@=/ end=/'\|$/ contains=TomoStringInterp,TomoEscape
-syn region TomoString start=/`.\@=/ end=/`\|$/ contains=TomoStringInterp
+syn region TomoString start=/`.\@=/ end=/`\|$/ contains=TomoStringInterpAt,TomoEscape
 syn region TomoString start=/".\@!\%(^\z(\s*\).*\)\@<=/ end=/^\z1"\|^\%(\z1\s\)\@!\s*\S\@=/ contains=TomoStringInterp,TomoEscape
 syn region TomoString start=/'.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\z1'\|^\%(\z1\s\)\@!\s*\S\@=/he=s-1 contains=TomoStringInterp,TomoEscape
-syn region TomoString start=/`.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\z1`\|^\%(\z1\s\)\@!\s*\S\@=/he=s-1 contains=TomoStringInterp
+syn region TomoString start=/`.\@!\%(^\z(\s*\).*\)\@<=/hs=e+1 end=/^\z1`\|^\%(\z1\s\)\@!\s*\S\@=/he=s-1 contains=TomoStringInterpAt,TomoEscape
 hi def link TomoString String
 
 syn region TomoPath start=;(\(\~/\|\./\|\.\./\|/\); skip=/\\.\|([^)]*)/ end=;$\|); contains=TomoStringInterp,TomoEscape
 hi def link TomoPath String
 
-syn region TomoDSLString start=/\z(["'`|/;([{<]\).\@=/hs=e end=/\z1/ contains=TomoStringInterp,TomoEscape contained
-syn region TomoDSLString start=/\z(["'`|/;([{<]\).\@!\%(^\z(\s*\).*\)\@<=/hs=e end=/^\z2\z1/he=e contains=TomoStringInterp,TomoEscape contained
-syn region TomoDSLString start=/\[/hs=e+1 end=/]/he=s-1 contains=TomoStringInterp,TomoEscape contained
-syn region TomoDSLString start=/{/hs=e+1 end=/}/he=s-1 contains=TomoStringInterp,TomoEscape contained
-syn region TomoDSLString start=/</hs=e+1 end=/>/he=s-1 contains=TomoStringInterp,TomoEscape contained
-syn region TomoDSLString start=/(/hs=e+1 end=/)/he=s-1 contains=TomoStringInterp,TomoEscape contained
-hi def link TomoDSLString String
+"syn region TomoDSLString start=/\z(["'`|/;([{<]\).\@=/hs=e end=/\z1/ contains=TomoStringInterp,TomoEscape contained
+"syn region TomoDSLString start=/\z(["'`|/;([{<]\).\@!\%(^\z(\s*\).*\)\@<=/hs=e end=/^\z2\z1/he=e contains=TomoStringInterp,TomoEscape contained
+"syn region TomoDSLString start=/\[/hs=e+1 end=/]/he=s-1 contains=TomoStringInterp,TomoEscape contained
+"syn region TomoDSLString start=/{/hs=e+1 end=/}/he=s-1 contains=TomoStringInterp,TomoEscape contained
+"syn region TomoDSLString start=/</hs=e+1 end=/>/he=s-1 contains=TomoStringInterp,TomoEscape contained
+"syn region TomoDSLString start=/(/hs=e+1 end=/)/he=s-1 contains=TomoStringInterp,TomoEscape contained
+"hi def link TomoDSLString String
 
 syn match TomoArray /\[/ nextgroup=TomoTypeAnnotation
 syn match TomoTable /{/ nextgroup=TomoTypeAnnotation
@@ -47,14 +47,14 @@ hi TomoDocTest ctermfg=gray
 syn match TomoDocError /!!!.*/
 hi TomoDocError ctermfg=red cterm=italic
 
-syn match TomoDSL /\$\w*/ nextgroup=TomoString,TomoCustomStringInterp
+syn match TomoDSL /\$\d\@!\w*/ nextgroup=TomoString
 hi def link TomoDSL String
 hi TomoDSL ctermfg=white cterm=bold
 
-syn match TomoCustomStringInterp /[~!@#$%^&*+=\?]\?/ contained nextgroup=TomoDSLString
-hi TomoCustomStringInterp ctermfg=gray
+"syn match TomoCustomStringInterp /[~!@#$%^&*+=\?]\?/ contained nextgroup=TomoDSLString
+"hi TomoCustomStringInterp ctermfg=gray
 
-syn match TomoStringDollar /\$:\?/ contained
+syn match TomoStringDollar /\$/ contained
 hi TomoStringDollar ctermfg=LightBlue
 
 syn match TomoStringAt /@/ contained
@@ -63,8 +63,11 @@ hi TomoStringAt ctermfg=LightBlue
 syn match TomoStringInterpWord /[a-zA-Z_][a-zA-Z_0-9]*/ contained
 hi TomoStringInterpWord ctermfg=LightBlue
 
-syn match TomoStringInterp /\$:\?/ contained nextgroup=TomoStringDollar,TomoStringInterpWord,TomoParenGroup,@TomoAll
+syn match TomoStringInterp /\$/ contained nextgroup=TomoStringDollar,TomoStringInterpWord,TomoParenGroup,@TomoAll
 hi TomoStringInterp ctermfg=LightBlue
+
+syn match TomoStringInterpAt /@/ contained nextgroup=TomoStringAt,TomoStringInterpWord,TomoParenGroup,@TomoAll
+hi TomoStringInterpAt ctermfg=LightBlue
 
 syn match TomoEscape /\\\([abenrtvN]\|x\x\x\|\d\{3}\|{[^}]*}\|\[[^]]*\]\)\|\\./
 hi TomoEscape ctermfg=LightBlue
